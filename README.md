@@ -48,6 +48,8 @@ A resource is the fundamental concept in any RESTful API. A resource�
 
 - [ ] What can the API return to help clients know if a request was successful?
 
+A status code of 200. This is the standard response for successful HTTP requests.
+
 * [ ] How can we partition our application into sub-applications?
 
 ## Project Setup
