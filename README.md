@@ -50,7 +50,9 @@ A resource is the fundamental concept in any RESTful API. A resource�
 
 A status code of 200. This is the standard response for successful HTTP requests.
 
-* [ ] How can we partition our application into sub-applications?
+- [ ] How can we partition our application into sub-applications?
+
+By using Express Router
 
 ## Project Setup
 
