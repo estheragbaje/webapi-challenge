@@ -3,7 +3,7 @@ const dbAction = require("./actionModel");
 
 const router = express.Router();
 
-router.get("/:id", (req, res) => {
+router.get("/:id", validateProjectId, (req, res) => {
   const id = req.params.id;
   dbAction
     .get(id)
@@ -38,7 +38,7 @@ router.post("/", (req, res) => {
     });
 });
 
-router.put("/:id", (req, res) => {
+router.put("/:id", validateProjectId, (req, res) => {
   const id = req.params.id;
   const changes = req.body;
   dbAction
@@ -55,7 +55,7 @@ router.put("/:id", (req, res) => {
     });
 });
 
-router.delete("/:id", (req, res) => {
+router.delete("/:id", validateProjectId, (req, res) => {
   const id = req.params.id;
 
   dbAction
@@ -71,5 +71,27 @@ router.delete("/:id", (req, res) => {
       });
     });
 });
+
+//middleware Functions
+function validateProjectId(req, res, next) {
+  const id = Number(req.params.id);
+  dbAction
+    .get(id)
+    .then(data => {
+      console.log(data);
+      if (data) {
+        next();
+      } else {
+        res.status(400).json({
+          message: "invalid project id"
+        });
+      }
+    })
+    .catch(error => {
+      res.status(404).json({
+        message: "Id does not exist"
+      });
+    });
+}
 
 module.exports = router;
