@@ -32,7 +32,7 @@ router.post("/", (req, res) => {
     });
 });
 
-router.get("/:id", (req, res) => {
+router.get("/:id", validateProjectId, (req, res) => {
   const id = req.params.id;
   db.get(id)
     .then(data => {
@@ -51,7 +51,7 @@ router.get("/:id", (req, res) => {
     });
 });
 
-router.put("/:id", (req, res) => {
+router.put("/:id", validateProjectId, (req, res) => {
   const changes = req.body;
   const id = req.params.id;
   db.update(id, changes)
@@ -67,7 +67,7 @@ router.put("/:id", (req, res) => {
     });
 });
 
-router.delete("/:id", (req, res) => {
+router.delete("/:id", validateProjectId, (req, res) => {
   const id = req.params.id;
   db.remove(id)
     .then(data => {
@@ -81,5 +81,26 @@ router.delete("/:id", (req, res) => {
       });
     });
 });
+
+//creating Middleware Functions
+function validateProjectId(req, res, next) {
+  const id = Number(req.params.id);
+  db.get(id)
+    .then(data => {
+      console.log(data);
+      if (data) {
+        next();
+      } else {
+        res.status(400).json({
+          message: "invalid project id"
+        });
+      }
+    })
+    .catch(error => {
+      res.status(404).json({
+        message: "Id does not exist"
+      });
+    });
+}
 
 module.exports = router;
