@@ -17,9 +17,9 @@ router.get("/:id", validateProjectId, (req, res) => {
     });
 });
 
-router.post("/", (req, res) => {
+router.post("/", [validateProjectIdExists, validateActions], (req, res) => {
   const newAction = {
-    project_id: req.body.project_id,
+    project_id: Number(req.body.project_id),
     description: req.body.description,
     notes: req.body.notes
   };
@@ -78,7 +78,6 @@ function validateProjectId(req, res, next) {
   dbAction
     .get(id)
     .then(data => {
-      console.log(data);
       if (data) {
         next();
       } else {
@@ -92,6 +91,40 @@ function validateProjectId(req, res, next) {
         message: "Id does not exist"
       });
     });
+}
+
+function validateProjectIdExists(req, res, next) {
+  const project_id = Number(req.body.project_id);
+  dbAction
+    .get(project_id)
+    .then(data => {
+      if (data) {
+        next();
+      } else {
+        res.status(400).json({
+          message: "Project ID does not exist"
+        });
+      }
+    })
+    .catch(error => {
+      res.status(404).json({
+        message: "Error getting project Id"
+      });
+    });
+}
+
+function validateActions(req, res, next) {
+  if (!req.body) {
+    res.status(400).json({
+      message: "missing action data"
+    });
+  } else if (!req.body.description || !req.body.notes || !req.body.project_id) {
+    res.status(400).json({
+      message: "missing field. Please supply all required fields"
+    });
+  } else {
+    next();
+  }
 }
 
 module.exports = router;

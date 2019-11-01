@@ -6,7 +6,7 @@ export default function ProjectCard(props) {
   return (
     <div>
       <h2>{name}</h2>
-      <h5>>{description}</h5>
+      <h5>{description}</h5>
       <p>{completed}</p>
       <p>{id}</p>
     </div>
