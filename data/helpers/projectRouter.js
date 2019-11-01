@@ -1,5 +1,6 @@
 const express = require("express");
 const db = require("./projectModel");
+const dbAction = require("./actionModel");
 
 const router = express.Router();
 
@@ -78,6 +79,26 @@ router.delete("/:id", validateProjectId, (req, res) => {
     .catch(error => {
       res.status(500).json({
         message: "There was an error in deleting this project"
+      });
+    });
+});
+
+router.get("/:id/actions", validateProjectId, (req, res) => {
+  const id = req.params.id;
+  db.getProjectActions(id)
+    .then(data => {
+      if (data.length > 0) {
+        res.status(200).json(data);
+      } else {
+        res.status(400).json({
+          message: `There is no project with an id of ${id}`
+        });
+      }
+    })
+    .catch(error => {
+      // console.log(error)
+      res.status(500).json({
+        message: `An error occured while getting action with a project id of ${id}`
       });
     });
 });
