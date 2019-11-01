@@ -44,14 +44,11 @@ They are the perfect place to modify the req and res objects with relevant i
 
 - [ ] Describe a Resource?
 
-
+A resource is the fundamental concept in any RESTful API. A resource is an object with a type, associated data, relationships to other resources, and a set of methods that operate on it. It is similar to an object instance in an object-oriented programming language, with the important difference that only a few standard methods are defined for the resource (corresponding to the standard HTTP GET, POST, PUT and DELETE methods), while an object instance typically has many methods.
 
 - [ ] What can the API return to help clients know if a request was successful?
 
-
-
-- [ ] How can we partition our application into sub-applications?
-
+* [ ] How can we partition our application into sub-applications?
 
 ## Project Setup
 
