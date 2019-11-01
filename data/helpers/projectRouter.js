@@ -15,7 +15,7 @@ router.get("/", (req, res) => {
     });
 });
 
-router.post("/", (req, res) => {
+router.post("/", validateProject, (req, res) => {
   const newProject = {
     name: "Introduction to Nodejs and Express",
     description: "Building APIs with Express"
@@ -101,6 +101,20 @@ function validateProjectId(req, res, next) {
         message: "Id does not exist"
       });
     });
+}
+
+function validateProject(req, res, next) {
+  if (!req.body) {
+    res.status(400).json({
+      message: "missing project data"
+    });
+  } else if (!req.body.name || !req.body.description) {
+    res.status(400).json({
+      message: "missing required name or description field"
+    });
+  } else {
+    next();
+  }
 }
 
 module.exports = router;
