@@ -32,4 +32,23 @@ router.post("/", (req, res) => {
     });
 });
 
+router.get("/:id", (req, res) => {
+  const id = req.params.id;
+  db.get(id)
+    .then(data => {
+      if (data) {
+        res.status(200).json(data);
+      } else {
+        res.status(400).json({
+          message: `There is no project with an id of ${id}`
+        });
+      }
+    })
+    .catch(error => {
+      res.status(500).json({
+        message: "The projects information could not be retreived"
+      });
+    });
+});
+
 module.exports = router;
